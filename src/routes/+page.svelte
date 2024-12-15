@@ -1,2 +1,19 @@
-<h1>Welcome to SvelteKitss</h1>
-<p>Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the documentation</p>
+<script lang="ts">
+  let text: string | null = "";
+
+  function stlacMa() {
+    // text = e.target.value;
+    // console.log(e.target.value);
+  }
+
+  function handleInput(e: any) {
+    text = e.target.value;
+  }
+
+  
+</script>
+
+
+<h1 style="color: {text};">{text}</h1>
+<input type="text" on:input={handleInput}>
+<button on:click="{stlacMa}">gombik</button>
