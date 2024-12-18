@@ -1,51 +1,64 @@
 <script lang="ts">
-	import { fade } from 'svelte/transition';
-  let firstName = $state("");
-  let lastName = $state("");
-  let fullName = $derived(`${firstName} - ${lastName}`);
-  let text: string | null = "";
-  let answer = 42;
-  let items = [1, 2, 3, 4, 5];
-	let visible = $state(false);
-	let tortilla = $state('Plain');
-  function stlacMa() {
-    // text = e.target.value;
-    // console.log(e.target.value);
-  }
+  let open = true;
 
-  function handleInput(e: any) {
-    firstName = e.target.value;
+  function displayDialog() {
+    open = !open;
   }
-
-  
 </script>
 
 <svelte:head>
-	<title>Hello world!</title>
-	<meta name="description" content="This is where the description goes for SEO" />
+  <title>Portfolio</title>
 </svelte:head>
 
-<h1>Shopping list</h1>
-<ul>
-	{#each items as item}
-		<li>{item} x {item}</li>
-	{/each}
-</ul>
+<div class="center">
+  <div style="background-color: blue;">
+    <p>Welcome</p>
+  </div>
+  <button onclick={displayDialog}>Create blog</button>
+</div>
 
-{#if visible}
-	<div transition:fade>fades in and out</div>
-{/if}
-{#if visible}
-	<div transition:fade={{ duration: 2000 }}>fades in and out over two seconds</div>
-{/if}
-<button onclick={() => visible = !visible}>toggle</button>
-<!-- grouped radio inputs are mutually exclusive -->
-<input type="text" bind:group={tortilla} value="Plain" />
-<input type="text" bind:group={tortilla} value="Whole wheat" />
-<input type="text" bind:group={tortilla} value="Spinach" />
-<h1 style="color: {text};">{text}</h1>
-<p>{fullName}</p>
-<!-- <input type="text" on:input={handleInput}> -->
-<input type="text" bind:value={firstName}>
-<input type="text" bind:value={lastName}>
-<button onclick="{stlacMa}" style="background-color: #f8f9fa;border: 1px solid #f8f9fa;border-radius: 4px;color: #3c4043;cursor: pointer;font-family: arial,sans-serif;font-size: 14px;height: 36px;line-height: 27px;min-width: 54px;padding: 0 16px;text-align: center; user-select: none; -webkit-user-select: none; touch-action: manipulation;">Gombik</button>
+<div>
+  <dialog {open}>
+    <label>
+      <p>Author:</p>
+      <input type="text" placeholder="Enter your name" />
+    </label>
+    <label>
+      <p>Blog title</p>
+      <input type="text" placeholder="Enter title" />
+    </label>
+    <label>
+      <p>Language</p>
+      <select>
+        <option value="">--Please choose a language--</option>
+        <option value="rust">Rust</option>
+        <option value="c">C</option>
+        <option value="ts">TypeScript</option>
+        <option value="js">JavaScript</option>
+      </select>
+    </label>
+    <label>
+      <p>Description (optional)</p>
+      <textarea placeholder="Brief description"></textarea>
+    </label>
+    <label>
+      <p>Body</p>
+      <textarea placeholder="Write your blog"></textarea>
+    </label>
+  </dialog>
+</div>
+
+<style>
+  :global {
+    .center {
+      margin: auto;
+      width: 50%;
+      text-align: center;
+    }
+    dialog {
+      border-width: 1px;
+      border-radius: 20px;
+      border-color: gray;
+    }
+  }
+</style>
