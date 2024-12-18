@@ -1,4 +1,4 @@
-let snippets = $state<BlogSnippet[]>([]);
+export let snippets = $state<BlogSnippet[]>([]);
 
 
 // todo: add snippet
@@ -13,4 +13,6 @@ export function removeSnippet(index: number) {
 }
 
 
-// update snippet
+export function updateSnippet(index: number, snippet: BlogSnippet) {
+  snippets.splice(index, 1, snippet);
+}
