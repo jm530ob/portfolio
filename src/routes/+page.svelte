@@ -1,4 +1,5 @@
 <script lang="ts">
+  import "../app.css";
   import SnippetCard from "../SnippetCard.svelte";
   import { snippets, addSnippet } from "../snippetState.svelte";
 
@@ -20,6 +21,18 @@
 <svelte:head>
   <title>Portfolio</title>
 </svelte:head>
+
+<div class="m-auto w-1/2 text-font-bold text-center">
+  <button
+    class="mt-4 py-2 px-4 bg-zinc-100 rounded-xl shadow-md"
+    onclick={toggleDialog}>Create blog</button
+  >
+  <div>
+    {#each snippets as snippet, index}
+      <SnippetCard {snippet} {index} />
+    {/each}
+  </div>
+</div>
 
 <div>
   <dialog {open}>
@@ -76,36 +89,8 @@
   </dialog>
 </div>
 
-<div class="center">
-  <button onclick={toggleDialog}>Create blog</button>
-  <div style="background-color: blue;">
-    {#each snippets as snippet, index}
-      <SnippetCard {snippet} {index} />
-    {/each}
-  </div>
-</div>
-
-<style>
-  :global {
-    * {
-      font-size: 1rem;
-      font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS",
-        sans-serif;
-    }
-    .center {
-      margin: auto;
-      width: 50%;
-      text-align: center;
-    }
-    dialog {
-      border-width: 1px;
-      border-radius: 20px;
-      border-color: gray;
-    }
-
-    div {
-      background-color: #242a38;
-      border-radius: 20px;
-    }
+<style lang="postcss">
+  :global(html) {
+    background-color: theme(colors.sky.100);
   }
 </style>
