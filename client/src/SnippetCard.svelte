@@ -16,7 +16,7 @@
     <h1>{snippet.title}</h1>
   </div>
   <div class="overflow-hidden">
-    <span class="w-full text-sky-100">{snippet.description}</span>
+    <span class="w-full">{snippet.description}</span>
   </div>
   <button class="btn w-fit">Read more</button>
 </div>
