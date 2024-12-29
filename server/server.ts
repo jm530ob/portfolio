@@ -1,33 +1,29 @@
 import express from "express";
 import dotenv from "dotenv";
-import mongoose from "mongoose";
-import { DialogModel } from "./db/models/dialog";
+import { router } from "./routes/api";
+import { PORT } from "./config";
+import { connect, createDb, createCollection } from "./db/dbConnection";
+import { Blog } from "./db/types";
 
 dotenv.config({ path: "../.env" });
 
-try {
-  let conn = mongoose.connect(`${process.env.MONGO_CONN}`);
-} catch (err) {
-  console.error(err);
-}
-
-const port = 3000;
-
-const app = express();
-
-// todo: query db data as an accessible resource thorugh /api interface
-app.get("/api", async (req, res) => {
+(async () => {
+  let conn = await connect();
+  let db = createDb(conn, "mongo-db");
+  let blogs = createCollection<Blog>(db, "blogs");
   try {
-    const data = await DialogModel.find();
-    res.json(data);
   } catch (err) {
-    console.error(err);
+    console.error("Connecting to database failed with error, " + err);
   }
 
-});
 
-// todo: handle POST request, store data into database
+  const app = express();
+  app.use(express.json());
+  app.use(router);
 
-app.listen(port, () => {
-  console.log(`Listening on port ${port}`)
-});
+
+  app.listen(PORT, () => {
+    console.log(`Listening on port: ${PORT}`)
+  });
+})();
+

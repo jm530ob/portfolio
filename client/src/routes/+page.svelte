@@ -58,9 +58,10 @@
   :global(body) {
     @apply bg-slate-950;
     @apply text-sky-100;
+    @apply text-xl;
   }
   :global(h1) {
-    @apply text-2xl font-bold;
+    @apply text-3xl font-bold;
   }
   :global(.bg-main) {
     @apply bg-slate-900;
@@ -69,9 +70,9 @@
     @apply bg-slate-950;
   }
   :global(.btn) {
-    @apply mt-2 bg-yellow-100 hover:bg-yellow-200 text-black font-bold text-sm px-2 py-1 rounded;
+    @apply mt-2 bg-yellow-100 hover:bg-yellow-200 text-black font-bold text-base px-2 py-1 rounded;
   }
   .link {
-    @apply font-bold text-sm text-yellow-50 hover:underline cursor-pointer inline;
+    @apply font-bold text-lg text-yellow-50 hover:underline cursor-pointer inline;
   }
 </style>

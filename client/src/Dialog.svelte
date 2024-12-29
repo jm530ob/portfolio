@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { stringify } from "postcss";
   import { addSnippet } from "./snippetState.svelte";
 
   let showDialog = $state(false);
@@ -104,7 +105,25 @@
       </div>
       <button
         class="btn self-end last:mt-0 mr-2 mb-2"
-        onclick={() => {
+        onclick={async () => {
+          try {
+            await fetch("/api", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                author: template.author,
+                language: template.language,
+                title: template.title,
+                description: template.description,
+                body: template.body,
+              }),
+            });
+          } catch (e) {
+            console.log(e);
+          }
+          //todo fix not working
           toggle();
           addSnippet(template);
         }}>Submit</button
