@@ -6,9 +6,10 @@ declare global {
   interface BlogSnippet {
     author: string,
     title: string,
-    language: string | null,
+    language?: string,
     description: string,
     body: string,
+    date?: string
   }
 
 }

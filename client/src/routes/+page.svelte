@@ -1,9 +1,11 @@
 <script lang="ts">
+  import type { PageData } from "./$types";
   import "../app.css";
   import "@fortawesome/fontawesome-free/css/all.min.css";
   import SnippetCard from "../SnippetCard.svelte";
   import Dialog from "../Dialog.svelte";
-  import { snippets } from "../snippetState.svelte";
+
+  let { data }: { data: PageData } = $props();
 
   // svelte-ignore non_reactive_update
   let dialog;
@@ -49,8 +51,8 @@
 </header>
 
 <main class="flex flex-col m-auto w-1/2 text-left bg-main">
-  {#each snippets as snippet, idx}
-    <SnippetCard {snippet} {idx} />
+  {#each data.items as item, idx}
+    <SnippetCard {item} {idx} />
   {/each}
 </main>
 
