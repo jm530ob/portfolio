@@ -106,26 +106,31 @@
       <button
         class="btn self-end last:mt-0 mr-2 mb-2"
         onclick={async () => {
+          toggle();
+          addSnippet(template);
           try {
-            await fetch("/api", {
+            let obj: BlogSnippet = {
+              author: template.author,
+              language: template.language,
+              title: template.title,
+              description: template.description,
+              body: template.body,
+            };
+
+            let response = await fetch("/api", {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
               },
-              body: JSON.stringify({
-                author: template.author,
-                language: template.language,
-                title: template.title,
-                description: template.description,
-                body: template.body,
-              }),
+              body: JSON.stringify(obj),
             });
+            if (!response.ok) {
+              // todo: error popup
+              throw new Error("Failed to submit data");
+            }
           } catch (e) {
             console.log(e);
           }
-          //todo fix not working
-          toggle();
-          addSnippet(template);
         }}>Submit</button
       >
     </dialog>

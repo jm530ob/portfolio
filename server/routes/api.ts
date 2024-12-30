@@ -1,16 +1,28 @@
 import express, { Request, Response, NextFunction } from "express";
-import { MongoClient } from "mongodb";
-import { connect, createDb, createCollection } from "../db/dbConnection";
+import { Collection, Db, MongoClient } from "mongodb";
+import { connect, getCollection } from "../db/dbConnection";
 import { Blog } from "../db/types";
+import config from "../config";
+
 
 export const router = express.Router();
 
 
 let client: MongoClient | null = null;
 
+
 async function initializeDb(req: Request, res: Response, next: NextFunction): Promise<void> {
-  client = await connect();
-  if (!client) {
+  try {
+
+    req.client = client = await connect();
+    req.db = req.client?.db(config.database);
+    req.collection = req.db?.collection(config.collection);
+  } catch (e) {
+    res.status(500).json({ success: false, msg: "Error connecting to a database!" });
+    return;
+  }
+
+  if (client == null) {
     res.status(500).json({ success: false, msg: "Waiting for database connection!" });
     return;
   }
@@ -29,16 +41,16 @@ function validateData(req: Request, res: Response, next: NextFunction): void {
 
 router.use(initializeDb);
 
+router.get("/", (req, res) => {
+  //todo
+});
+
 router.get("/api", async (req, res) => {
   try {
-    if (client) {
-      let db = createDb(client, "mongo");
-      let blogs = createCollection(db, "blogs");
-      let result = await blogs.find().toArray();
-      res.json(result);
-    }
+    let data = await req.collection.find({}).toArray();
+    res.status(200).json(data);
   } catch (err) {
-    console.error(err);
+    res.status(400).json({ success: false, msg: "Error accessing a database!" });
   }
 });
 
@@ -48,19 +60,14 @@ router.get("/api/:id", async (req, res) => {
 });
 
 router.post("/api", validateData, async (req, res) => {
-  console.log("Forum submitted!");
   let data = req.body;
-  const doc = {
+  const doc: Blog = {
     author: data.author,
     title: data.title,
     body: data.body,
     description: data.description,
-    date: Date.now()
+    date: new Date().toLocaleString()
   }
-  if (client) {
-    let db = createDb(client, "mongo");
-    let blogs = createCollection(db, "blogs");
-    await blogs.insertOne(doc);
-  }
+  req.collection.insertOne(data);
 })
 

@@ -1,6 +1,17 @@
-import { Document } from "mongodb";
+import { Collection, Db, Document, MongoClient } from "mongodb";
 
 // todo: auth
+
+declare global { // merge definitions
+  namespace Express {
+
+    interface Request {
+      client?: MongoClient,
+      db: Db,
+      collection: Collection
+    }
+  }
+}
 
 export interface Blog extends Document {
   author: string,
@@ -8,5 +19,6 @@ export interface Blog extends Document {
   language?: string,
   description: string,
   body: string,
-  date?: Date
+  date?: string
 }
+
