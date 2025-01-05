@@ -48,11 +48,9 @@
       >
     </span>
   </div>
-  <div class="w-full text-right px-6 py-2">
+  <div class="w-full text-right">
     <hr class="border-dashed border-gray-500" />
-    <button class="btn text-sm sm:text-base" onclick={dialog.toggle}
-      >Submit blog</button
-    >
+    <button class="btn" onclick={dialog.toggle}>Submit blog</button>
   </div>
 </header>
 
@@ -78,7 +76,7 @@
     @apply bg-slate-950;
   }
   :global(.btn) {
-    @apply mt-2 bg-yellow-100 hover:bg-yellow-200 text-black font-bold px-2 py-1 rounded;
+    @apply mt-2 bg-yellow-100 hover:bg-yellow-200 text-black text-base font-bold px-2 py-1 rounded;
   }
   .icon {
     @apply text-2xl px-2 py-1 border-slate-900 rounded-lg border bg-slate-800 md:text-xl md:border-0 md:px-0 md:py-0 md:bg-transparent;

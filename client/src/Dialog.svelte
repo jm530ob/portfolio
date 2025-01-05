@@ -44,46 +44,46 @@
       {#if showDropMenu}
         <div class="ml-2">
           <label>
-            <p class="text-white font-bold mb-1">Author:</p>
+            <span class="text-white font-bold mb-1">Author</span>
+            <span class="text-red-700">*</span>
             <input
               type="text"
               placeholder="Author name"
-              class="bg-scndary rounded placeholder-gray-600 text-white px-2 py-2"
+              class="bg-scndary rounded placeholder-gray-600 text-white px-2 py-2 block"
               bind:value={template.author}
             />
           </label>
         </div>
         <div class="ml-2">
           <label>
-            <p class="text-white font-bold mb-1">Blog title:</p>
+            <span class="text-white font-bold mb-1">Blog title</span>
+            <span class="text-red-700">*</span>
             <input
               type="text"
               placeholder="Enter title"
-              class="bg-scndary rounded placeholder-gray-600 text-white px-2 py-2"
+              class="bg-scndary rounded placeholder-gray-600 text-white px-2 py-2 block"
               bind:value={template.title}
             />
           </label>
         </div>
         <div class="ml-2">
           <label>
-            <p class="text-white font-bold mb-1">Language:</p>
+            <span class="text-white font-bold mb-1">Language</span>
             <select
-              class="bg-scndary placeholder-gray-600 text-white px-2 py-2"
+              class="bg-scndary placeholder-gray-600 text-white px-2 py-2 block"
               bind:value={template.language}
             >
-              <option>--Please choose a language--</option>
-              <option>Rust</option>
-              <option>C</option>
-              <option>TypeScript</option>
-              <option>JavaScript</option>
-              <option>Other</option>
+              <option value="" selected>--Please choose a language--</option>
+              <option value="rust">Rust</option>
+              <option value="c">C</option>
+              <option value="ts">TypeScript</option>
+              <option value="js">JavaScript</option>
             </select>
           </label>
         </div>
         <div class="mx-2">
           <label>
             <span class="text-white font-bold mb-1">Description</span>
-            <span class="text-xs text-white ml-1">(Optional)</span>
             <textarea
               placeholder="Brief description"
               class="bg-scndary placeholder-gray-600 text-white w-full h-10 resize-none px-2 py-2"
@@ -95,7 +95,8 @@
       {/if}
       <div class="mx-2">
         <label>
-          <p class="text-white font-bold mb-1">Body</p>
+          <span class="text-white font-bold mb-1">Body</span>
+          <span class="text-red-700">*</span>
           <textarea
             class="bg-scndary placeholder-gray-600 text-white w-full px-2 py-2"
             placeholder="Write your blog"
