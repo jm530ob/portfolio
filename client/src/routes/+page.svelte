@@ -18,7 +18,7 @@
 <Dialog bind:this={dialog} />
 
 <header
-  class="flex flex-col m-auto text-center items-center bg-main text-lg px-6 py-4 md:text-xl md:w-1/2 md:mt-3 md:py-2"
+  class="flex flex-col m-auto text-center items-center bg-main text-lg px-6 py-4 md:text-xl md:w-5/6 lg:w-1/2 md:mt-3 md:py-2"
 >
   <div class="flex flex-col w-fit text-left mt-2">
     <h1>Jakub Martenek</h1>
@@ -54,10 +54,14 @@
   </div>
 </header>
 
-<main class="flex flex-col m-auto w-1/2 text-left bg-main">
-  {#each data.items as item, idx}
-    <SnippetCard {item} {idx} />
-  {/each}
+<main class="px-6 m-auto md:w-5/6 lg:w-1/2 text-left bg-main">
+  {#if data.items}
+    {#each data.items as item, idx}
+      <SnippetCard {item} {idx} />
+    {/each}
+  {:else}
+    <!-- todo: error popup -->
+  {/if}
 </main>
 
 <style lang="postcss">
@@ -76,7 +80,7 @@
     @apply bg-slate-950;
   }
   :global(.btn) {
-    @apply mt-2 bg-yellow-100 hover:bg-yellow-200 text-black text-base font-bold px-2 py-1 rounded;
+    @apply mt-2 bg-slate-800 text-sky-100 text-base font-bold px-2 py-1 rounded-sm relative z-[1] before:content-[''] before:absolute before:top-0 before:left-0 before:w-0 before:h-full before:bg-yellow-100 before:rounded-sm before:-z-[1] before:duration-150 hover:before:w-full hover:duration-300 hover:text-slate-950;
   }
   .icon {
     @apply text-2xl px-2 py-1 border-slate-900 rounded-lg border bg-slate-800 md:text-xl md:border-0 md:px-0 md:py-0 md:bg-transparent;

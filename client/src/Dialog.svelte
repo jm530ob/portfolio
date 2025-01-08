@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { stringify } from "postcss";
   import { addSnippet } from "./snippetState.svelte";
 
   let showDialog = $state(false);
@@ -23,7 +22,7 @@
 </script>
 
 {#if showDialog}
-  <div class="bg-slate-950/70 fixed w-full h-full">
+  <div class="bg-slate-950/70 fixed w-full h-full z-10">
     <dialog open={showDialog} class="flex flex-col gap-5 bg-slate-900 w-1/2">
       <!-- header -->
       <div class="flex flex-col items-end gap-1 px-4">
