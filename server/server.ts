@@ -7,6 +7,6 @@ app.use(express.json());
 app.use(router);
 
 app.listen(config.port, () => {
-  console.log(`Listening on port: ${config.port}`)
+  console.log(`Server running at http://localhost:${config.port}`);
 });
 

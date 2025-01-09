@@ -18,7 +18,7 @@
 <Dialog bind:this={dialog} />
 
 <header
-  class="flex flex-col m-auto text-center items-center bg-main text-lg px-6 py-4 md:text-xl md:w-5/6 lg:w-1/2 md:mt-3 md:py-2"
+  class="flex flex-col m-auto text-center items-center bg-main text-lg px-6 py-4 md:text-xl md:mt-3 md:py-2 md:w-5/6 lg:w-1/2"
 >
   <div class="flex flex-col w-fit text-left mt-2">
     <h1>Jakub Martenek</h1>
@@ -37,8 +37,8 @@
     </span>
     <span>
       <a href="" class="ml-2">
-        <i class="fa-brands fa-discord icon"></i>
-        <p class="link ml-2 hidden md:inline">anathrax</p></a
+        <i class="fa-solid fa-file"></i>
+        <p class="link ml-2 hidden md:inline">CV</p></a
       >
     </span>
     <span>
@@ -54,21 +54,23 @@
   </div>
 </header>
 
-<main class="px-6 m-auto md:w-5/6 lg:w-1/2 text-left bg-main">
+<main
+  class="px-6 m-auto md:w-5/6 lg:w-1/2 text-left bg-main flex flex-col gap-6"
+>
   {#if data.items}
     {#each data.items as item, idx}
       <SnippetCard {item} {idx} />
     {/each}
   {:else}
     <!-- todo: error popup -->
+    {console.log("Error oops")}
   {/if}
 </main>
 
 <style lang="postcss">
   :global(body) {
-    @apply bg-slate-950;
-    @apply text-sky-100;
-    @apply text-xl;
+    @apply bg-slate-900 md:bg-slate-950;
+    @apply text-sky-100 text-xl font-sans;
   }
   :global(h1) {
     @apply text-3xl font-bold;
