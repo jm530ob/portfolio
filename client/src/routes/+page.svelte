@@ -67,6 +67,8 @@
   {/if}
 </main>
 
+<footer class="h-52 bg-slate-900/80 m-auto md:w-5/6 lg:w-1/2"></footer>
+
 <style lang="postcss">
   :global(body) {
     @apply bg-slate-900 md:bg-slate-950;

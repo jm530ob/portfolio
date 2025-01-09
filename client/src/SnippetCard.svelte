@@ -1,6 +1,6 @@
 <script lang="ts">
+  import { parseText } from "./utils/renderHtml";
   let { item, idx }: { item: BlogSnippet; idx: number } = $props();
-  let text = "ahoj \n cmuk \n cmuk";
 </script>
 
 <div class="flex flex-col bg-slate-700/30 rounded-xl">
@@ -30,7 +30,7 @@
       >
         {item.title}
       </h1>
-      {@html item.description.replace(/\n/g, "<br>")}
+      {@html parseText(item.description)}
     </div>
   </div>
   <div class="flex items-end justify-end">
