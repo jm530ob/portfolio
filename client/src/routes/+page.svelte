@@ -67,7 +67,13 @@
   {/if}
 </main>
 
-<footer class="h-52 bg-slate-900/80 m-auto md:w-5/6 lg:w-1/2"></footer>
+<footer class="bg-slate-900/80 px-8 py-8 m-auto md:w-5/6 lg:w-1/2">
+  <ul class="flex justify-center gap-x-10">
+    <li class="">© Jakub Martenek 2025</li>
+    <li class="">Source Code</li>
+    <li class="">MIT</li>
+  </ul>
+</footer>
 
 <style lang="postcss">
   :global(body) {
