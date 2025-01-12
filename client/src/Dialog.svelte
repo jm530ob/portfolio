@@ -115,6 +115,7 @@
               title: template.title,
               description: template.description,
               body: template.body,
+              date: new Date().toLocaleDateString(),
             };
 
             let response = await fetch("/api", {

@@ -3,6 +3,6 @@
 @tailwind utilities;
 
 ::selection {
-  @apply bg-amber-300/50;
+  @apply bg-slate-700/80;
 }
 

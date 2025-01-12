@@ -19,6 +19,6 @@ export interface Blog extends Document {
   language?: string,
   description: string,
   body: string,
-  date?: string
+  date: string
 }
 
