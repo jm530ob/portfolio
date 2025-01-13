@@ -118,7 +118,7 @@
               date: new Date().toLocaleDateString(),
             };
 
-            let response = await fetch("/api", {
+            let response = await fetch("/res", {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",

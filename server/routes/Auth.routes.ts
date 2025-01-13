@@ -1,10 +1,9 @@
 import express, { Request, Response } from "express";
+import cookieParser from "cookie-parser";
 import { check, validationResult } from "express-validator";
 import { initializeDb } from "../middleware/Database.middleware";
 
 export const route = express.Router();
-
-let sessions: Map<string, string> = new Map();
 
 route.get("/", (req, res) => {
 
@@ -37,7 +36,7 @@ route.post("/register", [
 
     let { username, password }: { username: string, password: string } = req.body;
     if (username == null || password == null) {
-      res.status(500).json({ msg: "Invalid request!" });
+      res.status(500).json({ err: "Invalid request!" });
       return;
     }
 
@@ -48,7 +47,8 @@ route.post("/register", [
         let doc = {
           username,
           password,
-          sessionId: crypto.randomUUID,
+          role: "User",
+          sessionId: crypto.randomUUID(),
           creationDate: new Date().toLocaleString()
         }
         await collection.insertOne(doc);
@@ -56,12 +56,43 @@ route.post("/register", [
         res.status(200).json({ msg: "success" });
       }
       else {
-        res.status(500).json({ msg: `User with name "${username}" already exists!` });
+        res.status(500).json({ err: `User with name ${username} already exists!` });
         return;
       }
     }
-    catch (e) { }
+    finally {
+      req.client?.close();
+    }
   });
 
-// todo
-route.post("/login", async (req, res) => { });
+route.use(cookieParser());
+
+route.post("/login", async (req, res) => {
+  let { username, password }: { username: string, password: string } = req.body;
+
+  if (username == null || password == null) {
+    res.status(500).json({ msg: "Invalid request!" });
+    return;
+  }
+  try {
+    let collection = req.db.collection("users")
+    let query = { username, password };
+    let options = {
+      projection: { sessionId: 1 }
+    }
+
+    let match = await collection.findOne(query, options);
+    if (match == null) {
+      res.status(401).json({ err: `User ${username} is not registered or data is incorrect!` });
+      return;
+    }
+
+    let sessionId = match.sessionId;
+    let expires = new Date(Date.now() + 60 * 60 * 1000);
+    res.status(200).cookie("sessionId", sessionId, { httpOnly: true, expires });
+    res.json({ msg: "User authenticated!" });
+    return;
+  } finally {
+    req.client?.close();
+  }
+});

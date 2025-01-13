@@ -1,5 +1,5 @@
 import express from "express";
-import { resourceRoute } from "./routes/Resources.routes";
+import { route as resourceRoute } from "./routes/Resources.routes";
 import { route as authRoute } from "./routes/Auth.routes";
 import config from "./config";
 

@@ -1,44 +1,64 @@
 import express, { Request, Response, NextFunction } from "express";
+import { check, validationResult } from "express-validator";
+import cookieParser from "cookie-parser";
 import { initializeDb } from "../middleware/Database.middleware";
 import { Blog } from "../database/types";
+import { authorize } from "../middleware/Auth.middleware";
+import { title } from "process";
 
-export const resourceRoute = express.Router();
+export const route = express.Router();
 
-function validateData(req: Request, res: Response, next: NextFunction): void {
-  let data = req.body; // not the best solution, may try using joi
-  if (!data?.author || !data?.title || !data?.body || !data?.description) {
-    res.status(400).json({ success: false, msg: "All required fields must be defined!" });
-    return;
-  };
-  next();
-}
+route.use(initializeDb);
+route.use(cookieParser());
 
-resourceRoute.use(initializeDb);
-
-
-resourceRoute.get("/", async (req, res) => {
+route.get("/", async (req, res) => {
   try {
-    let data = await req.collection.find({}).toArray();
+    let collection = req.db.collection("users");
+    let data = await collection.find({}).toArray();
     res.status(200).json(data);
   } catch (err) {
     res.status(400).json({ success: false, msg: "Error accessing a database!" });
   }
 });
 
-resourceRoute.get("/:id", async (req, res) => {
+route.get("/:id", async (req, res) => {
   let id;
   id = req.params.id;
 });
 
-resourceRoute.post("/", validateData, async (req, res) => {
-  let data = req.body;
-  const doc: Blog = {
-    author: data.author,
-    title: data.title,
-    body: data.body,
-    description: data.description,
-    date: data.date
-  }
-  req.collection.insertOne(data);
-})
+route.post("/", [
+  check("author")
+    .notEmpty().withMessage("Author is required!")
+    .isLength({ min: 3, max: 30 }).withMessage("Author must be between 3 and 30 letters long!"),
+
+  check(title)
+    .notEmpty().withMessage("Title is empty!"),
+
+  check("body")
+    .notEmpty().withMessage("Article is empty"),
+
+  check("description")
+    .notEmpty().withMessage("Write short description!")
+    .isLength({ max: 100 }).withMessage("Max length is 100 characters!"),
+
+  authorize(true) // check if admin
+],
+  async (req: Request, res: Response) => {
+    let errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      res.status(500).json(errors.array());
+      return;
+    }
+
+    let { author, title, body, description } = req.body;
+    const doc: Blog = {
+      author,
+      title,
+      body,
+      description,
+      date: new Date().toLocaleDateString()
+    }
+    req.collection.insertOne(doc);
+  })
 
