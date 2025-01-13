@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { PageData } from "./$types";
+  import type { Snippet } from "svelte";
   import "../app.css";
   import "@fortawesome/fontawesome-free/css/all.min.css";
   import SnippetCard from "../SnippetCard.svelte";
@@ -9,6 +10,35 @@
 
   // svelte-ignore non_reactive_update
   let dialog;
+
+  let username = $state("");
+  let password = $state("");
+  let authMode: string | null = $state("");
+  let success = $state("");
+  let error = $state("");
+  let isAdmin = false;
+  let isLogged = false;
+
+  async function authenticate(mode: string | null) {
+    if (mode == null) return;
+
+    const url = mode === "Register" ? "/auth/register" : "/auth/login";
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ username, password }),
+    });
+
+    if (response.ok) {
+      success = await response.text();
+      error = "";
+    } else {
+      error = await response.text();
+      success = "";
+    }
+  }
 </script>
 
 <svelte:head>
@@ -50,8 +80,50 @@
   </div>
   <div class="w-full text-right">
     <hr />
-    login
-    <button class="btn" onclick={dialog.toggle}>Submit blog</button>
+
+    {#snippet authBlock(authMethod: string)}
+      <div class="flex flex-col items-end">
+        <textarea
+          class="bg-scndary rounded placeholder-gray-600 text-white px-2 py-2 mt-2 w-full md:w-1/2 h-12 resize-none"
+          placeholder="Username"
+          bind:value={username}
+        ></textarea>
+        <textarea
+          class="bg-scndary rounded placeholder-gray-600 text-white px-2 py-2 mt-2 w-full md:w-1/2 h-12 resize-none"
+          placeholder="Password"
+          bind:value={password}
+        ></textarea>
+        <button
+          class="btn w-fit mb-2"
+          onclick={async () => {
+            authenticate(authMode);
+          }}>{authMethod}</button
+        >
+      </div>
+      <hr />
+    {/snippet}
+
+    {#if !isLogged}
+      <span
+        class="link"
+        onclick={() => {
+          authMode = authMode == "Login" ? null : "Login";
+        }}>login</span
+      >
+      <span> / </span>
+      <span
+        class="link"
+        onclick={() => {
+          authMode = authMode == "Register" ? null : "Register";
+        }}>register</span
+      >
+      {#if authMode}
+        {@render authBlock(authMode)}
+      {/if}
+    {/if}
+    {#if isAdmin}
+      <button class="btn" onclick={dialog.toggle}>Submit blog</button>
+    {/if}
   </div>
 </header>
 

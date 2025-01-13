@@ -13,7 +13,7 @@ route.use(cookieParser());
 
 route.get("/", async (req, res) => {
   try {
-    let collection = req.db.collection("users");
+    let collection = req.db.collection("blogs");
     let data = await collection.find({}).toArray();
     res.status(200).json(data);
   } catch (err) {
@@ -59,6 +59,6 @@ route.post("/", [
       description,
       date: new Date().toLocaleDateString()
     }
-    req.collection.insertOne(doc);
+    req.db.collection("blogs").insertOne(doc);
   })
 

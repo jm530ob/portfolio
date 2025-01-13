@@ -5,7 +5,8 @@ export default defineConfig({
   plugins: [sveltekit()],
   server: {
     proxy: {
-      '/res': 'http://localhost:3000/'
+      "/res": 'http://localhost:3000',
+      "/auth": 'http://localhost:3000',
     }
   }
 });

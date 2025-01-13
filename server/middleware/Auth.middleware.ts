@@ -4,7 +4,7 @@ export function authorize(checkAdmin = false) {
   return async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     let sessionId = req.cookies.sessionId;
 
-    if (sessionId == undefined) {
+    if (sessionId == null) {
       res.status(500).send("User is not logged in!");
       return;
     }
