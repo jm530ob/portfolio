@@ -12,6 +12,11 @@ declare global {
     date?: string
   }
 
+  export type PageData = {
+    blogs: BlogSnippet[];
+    userObj: any;
+  };
+
 }
 
 export { };

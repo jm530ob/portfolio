@@ -1,29 +1,34 @@
 <script lang="ts">
-  import type { PageData } from "./$types";
-  import type { Snippet } from "svelte";
   import "../app.css";
   import "@fortawesome/fontawesome-free/css/all.min.css";
   import SnippetCard from "../SnippetCard.svelte";
   import Dialog from "../Dialog.svelte";
+  import type { PageData } from "./$types";
+  import Popup from "../Popup.svelte";
+  import { MessageState } from "../types";
 
   let { data }: { data: PageData } = $props();
 
   // svelte-ignore non_reactive_update
   let dialog;
 
+  let authMode = $state("");
   let username = $state("");
+  let user: string | null = $state(null);
+  if (data.userObj) {
+    // server callback
+    user = data.userObj.user;
+  }
   let password = $state("");
-  let authMode: string | null = $state("");
-  let success = $state("");
-  let error = $state("");
+  let errorMsg: string | null = $state(null);
+  let successMsg: string | null = $state(null);
   let isAdmin = false;
-  let isLogged = false;
+  let isLoading = $state(false);
 
-  async function authenticate(mode: string | null) {
-    if (mode == null) return;
-
-    const url = mode === "Register" ? "/auth/register" : "/auth/login";
-    const response = await fetch(url, {
+  async function authenticate(mode: string) {
+    isLoading = true;
+    const url = mode == "Register" ? "/auth/register" : "/auth/login";
+    const res = await fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -31,13 +36,18 @@
       body: JSON.stringify({ username, password }),
     });
 
-    if (response.ok) {
-      success = await response.text();
-      error = "";
+    let json = await res.json();
+
+    if (!res.ok) {
+      errorMsg = json.msg;
     } else {
-      error = await response.text();
-      success = "";
+      successMsg = json.msg;
     }
+
+    if (mode == "Login" && res.ok) {
+      user = json.username;
+    }
+    isLoading = false;
   }
 </script>
 
@@ -83,16 +93,18 @@
 
     {#snippet authBlock(authMethod: string)}
       <div class="flex flex-col items-end">
-        <textarea
-          class="bg-scndary rounded placeholder-gray-600 text-white px-2 py-2 mt-2 w-full md:w-1/2 h-12 resize-none"
+        <input
+          type="text"
+          class="input"
           placeholder="Username"
           bind:value={username}
-        ></textarea>
-        <textarea
-          class="bg-scndary rounded placeholder-gray-600 text-white px-2 py-2 mt-2 w-full md:w-1/2 h-12 resize-none"
+        />
+        <input
+          type="password"
+          class="input"
           placeholder="Password"
           bind:value={password}
-        ></textarea>
+        />
         <button
           class="btn w-fit mb-2"
           onclick={async () => {
@@ -103,23 +115,35 @@
       <hr />
     {/snippet}
 
-    {#if !isLogged}
-      <span
+    {#if errorMsg}
+      <Popup bind:msg={errorMsg} stateInfo={MessageState.ERROR} />
+    {/if}
+
+    {#if successMsg}
+      <Popup bind:msg={successMsg} stateInfo={MessageState.SUCCESS} />
+    {/if}
+
+    {#if user == null}
+      <button
         class="link"
         onclick={() => {
-          authMode = authMode == "Login" ? null : "Login";
-        }}>login</span
-      >
+          authMode = authMode == "Login" ? "" : "Login";
+        }}
+        >login
+      </button>
       <span> / </span>
-      <span
+      <button
         class="link"
         onclick={() => {
-          authMode = authMode == "Register" ? null : "Register";
-        }}>register</span
+          authMode = authMode == "Register" ? "" : "Register";
+        }}>register</button
       >
-      {#if authMode}
+      {#if authMode != ""}
         {@render authBlock(authMode)}
       {/if}
+    {:else}
+      <span class="text-lg">Logged in:</span>
+      <span class="font-bold text-lg">{user}</span>
     {/if}
     {#if isAdmin}
       <button class="btn" onclick={dialog.toggle}>Submit blog</button>
@@ -130,13 +154,13 @@
 <main
   class="px-6 py-4 m-auto md:w-5/6 lg:w-1/2 text-left bg-main flex flex-col gap-6"
 >
-  {#if data.items}
-    {#each data.items as item, idx}
+  {#if data.blogs}
+    {#each data.blogs as item, idx}
       <SnippetCard {item} {idx} />
     {/each}
   {:else}
     <!-- todo: error popup -->
-    {console.log("Error oops")}
+    {console.log("Error")}
   {/if}
 </main>
 
@@ -187,6 +211,9 @@
   }
   :global(hr) {
     @apply border-dashed border-gray-500;
+  }
+  .input {
+    @apply bg-scndary rounded placeholder-gray-600 text-white px-2 py-2 mt-2 w-full md:w-1/2 h-12 resize-none;
   }
   .nav div {
     @apply bg-slate-800 md:bg-transparent rounded-[50%] w-12 h-12 md:w-fit md:h-fit;
