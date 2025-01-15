@@ -1,10 +1,17 @@
 <script lang="ts">
+  import Popup from "./Popup.svelte";
   import { addSnippet } from "./snippetState.svelte";
+  import { MessageState } from "./types";
 
   let showDialog = $state(false);
   let showDropMenu = $state(true);
 
+  let errMessage: string | null = $state(null);
+  let successMessage: string | null = $state(null);
+  let isLoading = $state(false);
+
   let template: BlogSnippet = {
+    _id: "",
     author: "",
     title: "",
     language: "",
@@ -18,6 +25,40 @@
 
   function toggleMenu() {
     showDropMenu = !showDropMenu;
+  }
+
+  async function submit() {
+    isLoading = true;
+    try {
+      let obj: BlogSnippet = {
+        _id: "",
+        author: template.author,
+        language: template.language,
+        title: template.title,
+        description: template.description,
+        body: template.body,
+        date: new Date().toLocaleDateString(),
+      };
+
+      let response = await fetch("/res", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(obj),
+      });
+      let json = await response.json();
+
+      if (!response.ok) {
+        errMessage = json.msg;
+      } else {
+        successMessage = json.msg;
+      }
+    } catch (e) {
+      console.log(e);
+    } finally {
+      isLoading = false;
+    }
   }
 </script>
 
@@ -105,35 +146,21 @@
       </div>
       <button
         class="btn self-end last:mt-0 mr-2 mb-2"
-        onclick={async () => {
-          toggle();
-          addSnippet(template);
-          try {
-            let obj: BlogSnippet = {
-              author: template.author,
-              language: template.language,
-              title: template.title,
-              description: template.description,
-              body: template.body,
-              date: new Date().toLocaleDateString(),
-            };
-
-            let response = await fetch("/res", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify(obj),
-            });
-            if (!response.ok) {
-              // todo: error popup
-              throw new Error("Failed to submit data");
-            }
-          } catch (e) {
-            console.log(e);
-          }
+        onclick={() => {
+          submit();
         }}>Submit</button
       >
+      {#if isLoading}
+        <Popup msg={"Loading..."} stateInfo={MessageState.LOADING} />
+      {/if}
+
+      {#if errMessage}
+        <Popup bind:msg={errMessage} stateInfo={MessageState.ERROR} />
+      {/if}
+
+      {#if successMessage}
+        <Popup bind:msg={successMessage} stateInfo={MessageState.SUCCESS} />
+      {/if}
     </dialog>
   </div>
 {/if}

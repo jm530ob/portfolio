@@ -1,6 +1,12 @@
 <script lang="ts">
   import { parseText } from "./utils/renderHtml";
+  import { goto } from "$app/navigation";
   let { item, idx }: { item: BlogSnippet; idx: number } = $props();
+  let id = item._id.toString();
+
+  function redirectToBlog() {
+    goto(`/blogs/${id}`);
+  }
 </script>
 
 <div class="flex flex-col bg-slate-700/30 rounded-xl">
@@ -46,7 +52,12 @@
       <i class="fa-solid fa-comment"></i> 0
     </div>
     <div class="">
-      <button class="btn w-fit">Read more</button>
+      <button
+        class="btn w-fit"
+        onclick={() => {
+          redirectToBlog();
+        }}>Read more</button
+      >
     </div>
   </div>
 </div>

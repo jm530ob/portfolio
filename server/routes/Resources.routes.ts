@@ -5,6 +5,7 @@ import { initializeDb } from "../middleware/Database.middleware";
 import { Blog } from "../database/types";
 import { authorize } from "../middleware/Auth.middleware";
 import { title } from "process";
+import { ObjectId } from "mongodb";
 
 export const route = express.Router();
 
@@ -22,8 +23,23 @@ route.get("/", async (req, res) => {
 });
 
 route.get("/:id", async (req, res) => {
-  let id;
-  id = req.params.id;
+  let id = req.params.id;
+  try {
+    let collection = req.db.collection("blogs");
+    let blog = await collection.findOne({
+      _id: new ObjectId(id)
+    });
+
+    if (blog == null) {
+      res.status(500).json({ msg: "Incorrect url!" });
+      return;
+    }
+    res.status(200).json(blog);
+  }
+  catch (e) {
+    res.status(404).send("404 Not found!");
+    return;
+  }
 });
 
 route.post("/", [
@@ -31,7 +47,7 @@ route.post("/", [
     .notEmpty().withMessage("Author is required!")
     .isLength({ min: 3, max: 30 }).withMessage("Author must be between 3 and 30 letters long!"),
 
-  check(title)
+  check("title")
     .notEmpty().withMessage("Title is empty!"),
 
   check("body")
@@ -47,7 +63,7 @@ route.post("/", [
     let errors = validationResult(req);
 
     if (!errors.isEmpty()) {
-      res.status(500).json(errors.array());
+      res.status(500).json(errors.array()[0]);
       return;
     }
 
@@ -60,5 +76,7 @@ route.post("/", [
       date: new Date().toLocaleDateString()
     }
     req.db.collection("blogs").insertOne(doc);
+
+    res.status(200).json({ msg: "Blog submitted!" });
   })
 

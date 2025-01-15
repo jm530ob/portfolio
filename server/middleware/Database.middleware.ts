@@ -11,12 +11,12 @@ export async function initializeDb(req: Request, res: Response, next: NextFuncti
     req.client = client = await connect();
     req.db = req.client.db(config.database);
   } catch (e) {
-    res.status(500).json({ success: false, msg: "Error connecting to a database!" });
+    res.status(500).json({ msg: "Error connecting to a database!" });
     return;
   }
 
   if (client == null) {
-    res.status(500).json({ success: false, msg: "Waiting for database connection!" });
+    res.status(500).json({ msg: "Waiting for database connection!" });
     return;
   }
   next();

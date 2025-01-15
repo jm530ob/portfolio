@@ -26,7 +26,7 @@
     class:top-12={isMoved}
   >
     <div class="m-4">
-      {msg}
+      <p class="text-sky-100">{msg}</p>
     </div>
     {#if stateInfo == MessageState.LOADING}
       <div class="h-1 bg-gray-700 rounded-lg"></div>

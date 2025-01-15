@@ -5,7 +5,7 @@ export function authorize(checkAdmin = false) {
     let sessionId = req.cookies.sessionId;
 
     if (sessionId == null) {
-      res.status(500).send("User is not logged in!");
+      res.status(500).json({ msg: "User is not logged in!" });
       return;
     }
 
@@ -13,7 +13,7 @@ export function authorize(checkAdmin = false) {
     let user = await req.db.collection("users").findOne({ sessionId }, options);
 
     if (user == null) {
-      res.status(500).send("User does not exists!");
+      res.status(500).json({ msg: "User does not exists!" });
       return;
     }
 
@@ -21,7 +21,7 @@ export function authorize(checkAdmin = false) {
       let role = user.role;
 
       if (role != "Admin") {
-        res.status(401).send("User does not have admin permissions");
+        res.status(401).json({ msg: "User does not have admin permissions" });
         return;
       }
     }

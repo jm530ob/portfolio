@@ -4,6 +4,7 @@ declare global {
   }
 
   interface BlogSnippet {
+    _id: ObjectID,
     author: string,
     title: string,
     language?: string,
