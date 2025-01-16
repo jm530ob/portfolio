@@ -110,6 +110,7 @@
           <label>
             <span class="text-white font-bold mb-1">Language</span>
             <select
+              multiple
               class="bg-scndary placeholder-gray-600 text-white px-2 py-2 block"
               bind:value={template.language}
             >
@@ -118,6 +119,9 @@
               <option value="c">C</option>
               <option value="ts">TypeScript</option>
               <option value="js">JavaScript</option>
+              <option value="svelte">Svelte</option>
+              <option value="react">React</option>
+              <option value="tailwind">Tailwindcss</option>
             </select>
           </label>
         </div>

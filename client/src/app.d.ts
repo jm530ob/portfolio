@@ -7,7 +7,7 @@ declare global {
     _id: ObjectID,
     author: string,
     title: string,
-    language?: string,
+    language?: string | string[],
     description: string,
     body: string,
     date?: string

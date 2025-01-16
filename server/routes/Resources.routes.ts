@@ -4,7 +4,6 @@ import cookieParser from "cookie-parser";
 import { initializeDb } from "../middleware/Database.middleware";
 import { Blog } from "../database/types";
 import { authorize } from "../middleware/Auth.middleware";
-import { title } from "process";
 import { ObjectId } from "mongodb";
 
 export const route = express.Router();

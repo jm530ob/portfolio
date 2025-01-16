@@ -1,6 +1,6 @@
-import type { PageServerLoad } from './$types';
+import type { PageLoad } from './$types';
 
-export const load: PageServerLoad = async ({ fetch }) => {
+export const load: PageLoad = async ({ fetch }) => {
   const res = await fetch("/res");
   const blogs = await res.json() as BlogSnippet[];
 

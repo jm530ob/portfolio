@@ -10,7 +10,7 @@
   }
   body {
     @apply bg-slate-900 md:bg-slate-950;
-    @apply text-sky-100 text-xl font-body;
+    @apply text-sky-50 text-xl font-body;
   }
   h1 {
     @apply text-3xl font-bold;
@@ -25,10 +25,10 @@
     @apply mt-2 bg-slate-700/70 text-sky-100 text-base font-bold px-2 py-1 rounded-sm relative z-[1] before:content-[''] before:absolute before:top-0 before:left-0 before:w-0 before:h-full before:bg-yellow-100 before:rounded-sm before:-z-[1] before:duration-150 hover:before:w-full hover:duration-300 hover:text-slate-950;
   }
   hr {
-    @apply border-dashed border-gray-500;
+    @apply border-solid border-gray-500/50;
   }
   .input {
-    @apply bg-scndary rounded placeholder-gray-600 text-white px-2 py-2 mt-2 w-full md:w-1/2 h-12 resize-none;
+    @apply bg-scndary rounded placeholder-gray-600 text-white px-2 py-2 mt-2 w-full md:w-1/2 h-10 resize-none;
   }
   .nav div {
     @apply bg-slate-800 md:bg-transparent rounded-[50%] w-12 h-12 md:w-fit md:h-fit;
@@ -39,17 +39,17 @@
   .nav p {
     @apply md:ml-2;
   }
-  .footer-icons div {
-    @apply flex items-center justify-center w-10 h-10 md:w-12 md:h-12  bg-slate-700/50 rounded-[50%];
-  }
   .footer-icons i {
-    @apply text-xl md:text-2xl;
+    @apply text-xl md:text-3xl;
+  }
+  .footer-icons a {
+    @apply text-sky-100/80;
   }
   .footer div {
-    @apply m-5 basis-full text-center text-lg;
+    @apply m-5 basis-full text-center text-lg text-sky-100/80;
   }
   .footer a {
-    @apply underline;
+    @apply underline underline-offset-2 text-sky-100/80;
   }
   .link {
     @apply font-bold text-lg text-yellow-50 hover:underline cursor-pointer;

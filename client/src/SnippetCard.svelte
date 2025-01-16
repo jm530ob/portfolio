@@ -19,13 +19,27 @@
         <p class="ml-1 inline font-bold">{item.author}</p>
       </div>
 
-      <img
-        alt=""
-        src="https://skillicons.dev/icons?i={item.language}"
-        width="40"
-        class="mt-2"
-      />
-      <!-- todo: foreach language -->
+      {#if Array.isArray(item.language)}
+        <ul class="flex flex-wrap gap-2">
+          {#each item.language as language}
+            <li class="inline">
+              <img
+                alt=""
+                src="https://skillicons.dev/icons?i={language}"
+                width="40"
+                class="mt-2 inline"
+              />
+            </li>
+          {/each}
+        </ul>
+      {:else}
+        <img
+          alt=""
+          src="https://skillicons.dev/icons?i={item.language}"
+          width="40"
+          class="mt-2"
+        />
+      {/if}
     </div>
 
     <div
@@ -36,22 +50,24 @@
       >
         {item.title}
       </h1>
-      <div class="text-slate-300 pt-2">
+      <div class="text-sky-100/80 pt-2 line-clamp-2">
         {@html parseText(item.description)}
       </div>
     </div>
   </div>
-  <div class="flex items-end justify-start metadata">
+  <div class="flex items-end justify-start metadata relative">
     <div class="">
       {item.date}
     </div>
-    <div class="">
-      <i class="fa-solid fa-thumbs-up"></i> 0
+    <div class="hidden sm:flex sm: gap-6">
+      <span class="">
+        <i class="fa-solid fa-thumbs-up"></i> 0
+      </span>
+      <span class="">
+        <i class="fa-solid fa-comment"></i> 0
+      </span>
     </div>
-    <div class="grow">
-      <i class="fa-solid fa-comment"></i> 0
-    </div>
-    <div class="">
+    <div class="absolute right-0">
       <button
         class="btn w-fit"
         onclick={() => {

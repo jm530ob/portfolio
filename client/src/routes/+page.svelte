@@ -75,7 +75,7 @@
   <div class="w-full py-3 flex justify-evenly nav">
     <div>
       <a href="mailto:j.martenek@azet.sk">
-        <i class="fa-regular fa-envelope"></i>
+        <i class="fa-solid fa-envelope"></i>
         <p class="link hidden md:inline">j.martenek@azet.sk</p></a
       >
     </div>
@@ -86,7 +86,7 @@
       >
     </div>
     <div>
-      <a href="">
+      <a href="https://www.linkedin.com/in/jakub-martenek-a15915282/">
         <i class="fa-brands fa-linkedin"></i>
         <p class="link hidden md:inline">linkedin</p></a
       >
@@ -119,33 +119,23 @@
       <hr />
     {/snippet}
 
-    {#if isLoading}
-      <Popup msg={"Loading..."} stateInfo={MessageState.LOADING} />
-    {/if}
-
-    {#if errorMsg}
-      <Popup bind:msg={errorMsg} stateInfo={MessageState.ERROR} />
-    {/if}
-
-    {#if successMsg}
-      <Popup bind:msg={successMsg} stateInfo={MessageState.SUCCESS} />
-    {/if}
-
     {#if user == null}
-      <button
-        class="link"
-        onclick={() => {
-          authMode = authMode == "Login" ? "" : "Login";
-        }}
-        >login
-      </button>
-      <span> / </span>
-      <button
-        class="link"
-        onclick={() => {
-          authMode = authMode == "Register" ? "" : "Register";
-        }}>register</button
-      >
+      <div class="mx-2 mt-1">
+        <button
+          class="link"
+          onclick={() => {
+            authMode = authMode == "Login" ? "" : "Login";
+          }}
+          >login
+        </button>
+        <span> / </span>
+        <button
+          class="link"
+          onclick={() => {
+            authMode = authMode == "Register" ? "" : "Register";
+          }}>register</button
+        >
+      </div>
       {#if authMode != ""}
         {@render authBlock(authMode)}
       {/if}
@@ -161,13 +151,25 @@
       </div>
     {/if}
   </div>
+
+  {#if isLoading}
+    <Popup msg={"Loading..."} stateInfo={MessageState.LOADING} />
+  {/if}
+
+  {#if errorMsg}
+    <Popup bind:msg={errorMsg} stateInfo={MessageState.ERROR} />
+  {/if}
+
+  {#if successMsg}
+    <Popup bind:msg={successMsg} stateInfo={MessageState.SUCCESS} />
+  {/if}
 </header>
 
 <main
   class="px-6 py-4 m-auto md:w-5/6 lg:w-1/2 text-left bg-main flex flex-col gap-6"
 >
   {#if data.blogs}
-    {#each data.blogs as item, idx}
+    {#each data.blogs.slice().reverse() as item, idx}
       <SnippetCard {item} {idx} />
     {/each}
   {:else}
@@ -176,30 +178,33 @@
   {/if}
 </main>
 
-<footer class="bg-slate-900/70 pt-10 pb-10 m-auto md:w-5/6 lg:w-1/2">
-  <div class="flex justify-center gap-6 footer-icons">
-    <div>
-      <i class="fa-brands fa-github"></i>
-    </div>
-    <div>
+<footer class="bg-slate-800/40 pt-10 pb-10 m-auto md:w-5/6 lg:w-1/2">
+  <div class="flex justify-center gap-9 my-8 footer-icons">
+    <a href="https://github.com/jm530ob">
+      <i class="fa-brands fa-github"></i></a
+    >
+    <a href="https://www.linkedin.com/in/jakub-martenek-a15915282/">
       <i class="fa-brands fa-linkedin"></i>
-    </div>
-    <div>
-      <i class="fa-brands fa-discord"></i>
-    </div>
-    <div>
+    </a>
+
+    <a href="https://stackoverflow.com/users/15371533/anathrax">
       <i class="fa-brands fa-stack-overflow"></i>
-    </div>
-    <div>
+    </a>
+    <a href="https://medium.com/@jmartenek">
+      <i class="fa-brands fa-medium"></i>
+    </a>
+    <a href="https://dev.to/jm530ob">
       <i class="fa-brands fa-dev"></i>
-    </div>
+    </a>
   </div>
   <div class="flex content-center justify-center text-slate-300 footer">
-    <div class="">
-      <p class="inline text-slate-700/90 font-bold">©</p>
-      <p class="inline">Jakub Martenek 2024-2025</p>
+    <div>
+      <p>Developed by Jakub Martenek</p>
     </div>
-    <div><a href="">Source Code</a></div>
-    <div><a href="">MIT</a></div>
+    <div>
+      <p class="inline font-bold">&copy;</p>
+      <p class="inline">Copyright 2024-2025</p>
+    </div>
+    <div><a href="https://github.com/jm530ob/portfolio">Source Code</a></div>
   </div>
 </footer>

@@ -2,7 +2,6 @@ import express, { Request, Response } from "express";
 import cookieParser from "cookie-parser";
 import { check, validationResult } from "express-validator";
 import { initializeDb } from "../middleware/Database.middleware";
-import { warn } from "console";
 
 export const route = express.Router();
 
