@@ -1,5 +1,12 @@
+import type { Db, MongoClient } from "mongodb";
+
 declare global {
   namespace App {
+    interface Locals {
+      sessionId: string | undefined
+      client: MongoClient
+      db: Db
+    }
 
   }
 
