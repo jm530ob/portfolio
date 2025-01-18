@@ -1,6 +1,8 @@
-import { database } from "$env/static/private";
+// import { database } from "$env/static/private";
 import { json, type Handle, type RequestEvent } from "@sveltejs/kit";
 import { connect } from "./mongo.client";
+
+const database = "db0";
 
 async function initializeDb(event: RequestEvent) {
   try {
@@ -20,11 +22,11 @@ async function initializeDb(event: RequestEvent) {
 export const handle: Handle = async ({ event, resolve }) => {
 
   if (event.url.pathname.startsWith("/auth")) {
-    initializeDb(event);
+    await initializeDb(event);
   }
 
   if (event.url.pathname.startsWith("/res")) {
-    initializeDb(event);
+    await initializeDb(event);
 
     if (event.request.method == "POST") {
       let sessionId = event.locals.sessionId = event.cookies.get("sessionId");
