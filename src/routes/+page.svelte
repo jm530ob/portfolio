@@ -62,7 +62,7 @@
 <Dialog bind:this={dialog} />
 
 <header
-  class="flex flex-col m-auto text-center items-center bg-main text-lg px-6 py-4 md:text-xl md:mt-3 md:py-2 md:w-5/6 lg:w-1/2"
+  class="flex flex-col m-auto text-center items-center bg-main text-lg px-6 py-4 md:text-lg md:mt-3 md:py-2 md:w-5/6 lg:w-1/2"
 >
   <div class="flex flex-col w-fit text-left mt-2">
     <h1>Jakub Martenek</h1>

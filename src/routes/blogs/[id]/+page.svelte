@@ -37,8 +37,8 @@
       </div>
     </button>
   </div>
-  <h1 class="text-4xl font-extrabold">{data.title}</h1>
-  <p class="text-2xl text-sky-100/80">{data.description}</p>
+  <h1 class="text-3xl font-extrabold">{data.title}</h1>
+  <p class="text-xl text-sky-100/80">{data.description}</p>
   <div>
     <span class="text-sky-100/80">Published by</span>
     <span>{data.author}</span>
@@ -67,7 +67,7 @@
 <article
   class="px-6 py-4 m-auto md:w-5/6 lg:w-1/2 text-left flex flex-col gap-6 bg-main h-screen"
 >
-  <div class="text-2xl">
+  <div class="text-xl">
     {data.body}
   </div>
 </article>

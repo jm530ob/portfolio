@@ -10,10 +10,10 @@
   }
   body {
     @apply bg-slate-900 md:bg-slate-950;
-    @apply text-sky-50 text-xl font-body;
+    @apply text-sky-50 text-lg font-body;
   }
   h1 {
-    @apply text-3xl font-bold;
+    @apply text-2xl font-bold;
   }
   .bg-main {
     @apply bg-slate-900;
@@ -40,13 +40,13 @@
     @apply md:ml-2;
   }
   .footer-icons i {
-    @apply text-xl md:text-3xl;
+    @apply text-xl md:text-2xl;
   }
   .footer-icons a {
     @apply text-sky-100/80;
   }
   .footer div {
-    @apply m-5 basis-full text-center text-lg text-sky-100/80;
+    @apply m-5 basis-full text-center text-sm md:text-base text-sky-100/80;
   }
   .footer a {
     @apply underline underline-offset-2 text-sky-100/80;
