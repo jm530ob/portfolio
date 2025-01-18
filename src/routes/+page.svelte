@@ -80,7 +80,9 @@
       >
     </div>
     <div>
-      <a href="">
+      <a
+        href="https://docs.google.com/document/d/1Go7pligLtMZwBMgWZKwnPfTS8JBuGiGPmoThUaiFDRk/edit?usp=sharing"
+      >
         <i class="fa-solid fa-file"></i>
         <p class="link hidden md:inline">CV</p></a
       >
